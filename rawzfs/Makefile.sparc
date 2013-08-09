@@ -1,0 +1,17 @@
+#
+# Copyright (c) 1999 by Sun Microsystems, Inc.
+# All rights reserved.
+#
+#ident	"@(#)Makefile.sparc	1.1	99/11/19 SMI"
+
+CC = cc
+LINT = lint
+
+CFLAGS =
+CPPFLAGS =
+LDFLAGS =
+LIBS =
+
+LINTFLAGS =
+
+include ../Makefile.common

@@ -1,0 +1,49 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"@(#)Makefile.common	1.3	04/09/28 SMI"
+#
+
+# MODULES = example1.so example2.so rawufs.so rawzfs.so segpages.so
+MODULES = rawzfs.so
+
+CFLAGS += $(CCVERBOSE) -m64 -xstrconst -K pic -I /root/smartos-live/projects/illumos/usr/src/uts/common/fs/zfs -I /root/smartos-live/projects/illumos/usr/src/cmd/mdb/common -I /root/smartos-live/projects/illumos/proto/root_i386/usr/include -I /root/smartos-live/projects/illumos/usr/src/lib/libzpool/common -I /root/smartos-live/projects/illumos/usr/src/uts/common/fs/zfs -L/root/smartos-live/projects/illumos/proto/root_i386/lib -lzpool -lzfs -lnvpair -lumem
+# CPPFLAGS += -D_KERNEL
+LDFLAGS += $(ZTEXT)
+
+OBJECTS = $(MODULES:%.so=%.o)
+LINTFILES = $(MODULES:%.so=%.ln)
+
+all: $(MODULES)
+
+.KEEP_STATE:
+
+.NO_PARALLEL:
+.PARALLEL: $(OBJECTS) $(LINTFILES)
+
+%.so: %.o
+	$(CC) $(CFLAGS) -G -o $@ $< $(LDFLAGS) $(LIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+%.o: common/%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+clean:
+	rm -f $(OBJECTS)
+
+clean.lint:
+	rm -f $(LINTFILES)
+
+clobber: clean clean.lint
+	rm -f $(MODULES)
+
+%.ln: %.c
+	$(LINT) $(LINTFLAGS) $(CPPFLAGS) -c $<
+
+%.ln: ../common/%.c
+	$(LINT) $(LINTFLAGS) $(CPPFLAGS) -c $<
+
+lint: $(LINTFILES)

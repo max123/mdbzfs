@@ -1,0 +1,10 @@
+
+To build, you'll need to change Makefile.common to point to
+your copy of the solaris source.  Basically, everywhere it
+says /wd320/max/onnv.111b/... should be changed to whereever
+the source is on your machine.  If you don't have source,
+you can get opensolaris and nevada source from www.opensolaris.org.
+
+Also, this will build 32-bit x86.  For SPARC and x64, you'll need to add "-m64"
+to the CFLAGS in Makefile.common.
+
